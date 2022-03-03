@@ -16,6 +16,7 @@ class App extends Component{
       .then(response => response.json())
       .then(users => this.setState({pokedex:users}));
   }
+  
   //<button onClick = {()=> this.setState({string : 'Hello Broo'})}></button>
   OnSearchChange = e =>{
     const searchField = e.target.value.toLocaleLowerCase();
