@@ -1,4 +1,4 @@
-import SearchBox from './Components/search-box/search-box.component';
+import {SearchBox} from './Components/search-box/search-box.component';
 import './App.css';
 import React, {Component} from 'react';
 import {CardList} from './Components/card-list/card-list.Components'
@@ -16,7 +16,7 @@ class App extends Component{
       .then(response => response.json())
       .then(users => this.setState({pokedex:users}));
   }
-  
+
   //<button onClick = {()=> this.setState({string : 'Hello Broo'})}></button>
   OnSearchChange = e =>{
     const searchField = e.target.value.toLocaleLowerCase();
@@ -35,7 +35,7 @@ class App extends Component{
     return (
       <div className="App"> 
         <SearchBox 
-          classname='search-box'
+          classname={'search-box'}
           onChangeHandler={OnSearchChange} 
           placeholder={'Search Pokemon'}
         />
