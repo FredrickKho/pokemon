@@ -1,8 +1,5 @@
-import { Component } from "react";
 import './search-box.styles.css';
-
-
-export const SearchBox =()=>{
+export const SearchBox =(props)=>{
     return(
         <input 
         className={this.props.classname}  
