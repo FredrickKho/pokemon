@@ -1,48 +1,83 @@
 import {SearchBox} from './Components/search-box/search-box.component';
 import './App.css';
-import React, {Component} from 'react';
+// import React, {Component} from 'react';
 import {CardList} from './Components/card-list/card-list.Components'
-class App extends Component{
-  constructor(){
-    super();
-    this.state = {
-      pokedex:[],
-      searchField:''
-    };
-  }
-  
-  componentDidMount(){
+import { useState,useEffect } from 'react';
+const App = () => {
+  const [searchField,setSearchField] = useState('');
+  const [pokedex,setPokedex] = useState([]);
+  const [title,setTitle] = useState('');
+  const [filteredPokemon,setFilteredPokemon] = useState (pokedex);
+  console.log('render');
+  useEffect(()=>{
     fetch('https://jsonplaceholder.typicode.com/users')
-      .then(response => response.json())
-      .then(users => this.setState({pokedex:users}));
-  }
+    .then(response => response.json())
+    .then(users => setPokedex(users));
+  },[])
 
-  //<button onClick = {()=> this.setState({string : 'Hello Broo'})}></button>
-  OnSearchChange = e =>{
-    const searchField = e.target.value.toLocaleLowerCase();
-    this.setState(()=>{
-      return {searchField};
-    })
-  }
-  render(){
-    const {pokedex,searchField} = this.state;
-    const {OnSearchChange} = this;
-    console.log('rendering');
-    const filteredPokemon = pokedex.filter(pokemon=>{
+  useEffect(()=>{
+    const newfilteredPokemon = pokedex.filter(pokemon=>{
       return pokemon.name.toLocaleLowerCase().includes(searchField);
     })
+    setFilteredPokemon(newfilteredPokemon);
+  },[pokedex,searchField])
 
-    return (
-      <div className="App"> 
-        <SearchBox 
-          classname={'search-box'}
-          onChangeHandler={OnSearchChange} 
-          placeholder={'Search Pokemon'}
-        />
-        <CardList pokedex={filteredPokemon} />
-      </div> 
-    ); 
+  
+
+  const OnSearchChange = (e) => {
+    const searchFieldString = e.target.value.toLocaleLowerCase();
+    setSearchField(searchFieldString);
   }
+  const OnTitleChange = (e) => {
+    const titleFieldString = e.target.value;
+    setTitle(titleFieldString);
+  }
+  useEffect(()=>{
+    setTitle(title);
+    console.log(title);
+  },[title])
+  
+  return (
+    <div className="App"> 
+      <h1 className='Title'>{title}</h1>
+      <SearchBox 
+        classname={'search-box'}
+        onChangeHandler={OnSearchChange} 
+        placeholder={'Search Pokemon'}
+      />
+      <br></br>
+      <SearchBox 
+        classname={'search-box'}
+        onChangeHandler={OnTitleChange} 
+        placeholder={'Search Title'}
+      />
+     <CardList pokedex={filteredPokemon} />
+    </div> 
+  );
 }
+
+// class App extends Component{
+// //   constructor(){
+// //     super();
+// //     this.state = {
+// //       pokedex:[],
+// //       searchField:''
+// //     };
+// //   }
+  
+// //   componentDidMount(){
+    
+// //   }
+// //   //<button onClick = {()=> this.setState({string : 'Hello Broo'})}></button>
+//   render(){
+//     return(
+//       <Apps></Apps>
+//     );
+// //     // const {pokedex,searchField} = this.state;
+// //     // const {OnSearchChange} = this;
+// //     // console.log('rendering');
+    
+//   }
+// }
 
 export default App;
